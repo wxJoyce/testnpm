@@ -2,7 +2,7 @@ import { APP_ID, SIGN_SECRET } from './config.js'
 import Rsa from './plugins/rsa.js'
 import { sha256 } from 'js-sha256'
 import axios from "axios"
-let requestUrl = 'https://drone.godouav.com/api/sso'
+let requestUrl = 'https://dev.godouav.com/api/sso'
 function commonLogin(baseUrl,accounts,password,vertifyCode,appid,sign_secret){
     let passwordSec = Rsa.rsaPublicData(password);
     let timestamp = Math.round(new Date())
@@ -16,7 +16,7 @@ function commonLogin(baseUrl,accounts,password,vertifyCode,appid,sign_secret){
         verifyInput: vertifyCode,
     }
     axios({
-        url: baseUrl?baseUrl:requestUrl+ '/login',
+        url: baseUrl+ '/login',
         method: 'post',
         data: params,
         headers:{
@@ -27,10 +27,11 @@ function commonLogin(baseUrl,accounts,password,vertifyCode,appid,sign_secret){
         }
 
     }).then(res=>{
-        return res.data
+        // return res.data
+        console.log(res.data)
     }).catch(err=>{
         console.log(err)
     })
 }
-// commonLogin('wx01','123456','',APP_ID,SIGN_SECRET)
+commonLogin(requestUrl,'wx01','123456','',APP_ID,SIGN_SECRET)
 export default {commonLogin};
